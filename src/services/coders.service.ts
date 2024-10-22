@@ -1,5 +1,6 @@
 import { HttpClient } from "../utils/client-http";
 import { Icoder } from "../models/coders/coder.model";
+import { error } from "console";
 
 export class CodersService {
   private httpClient: HttpClient;
@@ -26,11 +27,21 @@ export class CodersService {
       throw error;
     }
   }
-  async post(coder: Icoder): Promise<Icoder> {
+  async create(coder: Icoder): Promise<Icoder> {
     try {
-      const response = await this.httpClient.post<Icoder, Icoder>("coders",coder);
-      return response;
+      const codernew = await this.httpClient.post<Icoder, Icoder>("coders",coder);
+      return codernew;
     } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+  async update(id:string, coder:Icoder){
+    try{
+      const coderupdate = this.httpClient.put<Icoder, Icoder>(`coders/${id}`,coder);
+      return coderupdate;
+    }catch (error){
+
       console.log(error);
       throw error;
     }

@@ -1,12 +1,13 @@
-import { json } from "stream/consumers";
+
+
 
 const defaultBaseUrl = "https://671639dd33bc2bfe40bcfdb7.mockapi.io/API/v1/";
 
 export class HttpClient {
     private baseUrl: string;
-
+  
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl || defaultBaseUrl; 
+      this.baseUrl = baseUrl || defaultBaseUrl;
     }
 
     async get<T>(url: string): Promise<T> {
@@ -37,8 +38,16 @@ export class HttpClient {
         });
         return this.handleResponse(response);
     }
-
-    
+    async put<T, R>(url: string, body: R): Promise<T> {
+        const headers = await this.getHeader();
+        const response = await fetch(`${this.baseUrl}/${url}`, { 
+            headers: headers,
+            method: "PUT",
+            body: JSON.stringify(body),
+        });
+        return this.handleResponse(response);
+    }
+   
     private async getHeader() {
         return {
             "Content-Type": "application/json",
